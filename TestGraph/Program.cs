@@ -52,13 +52,12 @@ namespace TestGraph
             //    }
             //} 
             #endregion
-            connectGraphAPI();
             var authProvider = new DeviceCodeAuthProvider("b238cedc-a5b3-4de2-a9f0-3d8eff197865",
                 new[] { "User.Read", "MailboxSettings.Read", "Calendars.ReadWrite" });
 
             // Request a token to sign in the user
-            //var accessToken = authProvider.GetAccessToken().Result;
-            //Console.WriteLine($"Access token: {accessToken}\n");
+            var accessToken = authProvider.GetAccessToken().Result;
+            Console.WriteLine($"Access token: {accessToken}\n");
             // Initialize Graph client
             GraphHelper.Initialize(authProvider);
             // Get signed in user

@@ -13,8 +13,8 @@ namespace TestGraph
         private static GraphServiceClient graphClient;
         public static void Initialize(IAuthenticationProvider authProvider)
         {
-            //graphClient = new GraphServiceClient(authProvider);
-             graphClient = new GraphServiceClient(new System.Net.Http.HttpClient());
+            graphClient = new GraphServiceClient(authProvider);
+             //graphClient = new GraphServiceClient(new System.Net.Http.HttpClient());
         }
         public static async Task<User> GetMeAsync()
         {
