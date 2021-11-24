@@ -52,11 +52,11 @@ namespace TestGraph
             //    }
             //} 
             #endregion
-            var authProvider = new DeviceCodeAuthProvider("b238cedc-a5b3-4de2-a9f0-3d8eff197865",
+            var authProvider = new DeviceCodeAuthProvider("67bbfb44-4df2-4110-bcee-c708d52b7027",//"b238cedc-a5b3-4de2-a9f0-3d8eff197865",
                 new[] { "User.Read", "MailboxSettings.Read", "Calendars.ReadWrite" });
 
             // Request a token to sign in the user
-            var accessToken = authProvider.GetAccessToken().Result;
+            var accessToken = authProvider.GetATokenForGraph().Result;
             Console.WriteLine($"Access token: {accessToken}\n");
             // Initialize Graph client
             GraphHelper.Initialize(authProvider);
