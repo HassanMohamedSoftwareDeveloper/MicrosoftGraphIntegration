@@ -1,8 +1,6 @@
 ﻿using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TimeZoneConverter;
 
@@ -14,21 +12,20 @@ namespace TestGraph
         public static void Initialize(IAuthenticationProvider authProvider)
         {
             graphClient = new GraphServiceClient(authProvider);
-             //graphClient = new GraphServiceClient(new System.Net.Http.HttpClient());
         }
         public static async Task<User> GetMeAsync()
         {
             try
             {
+                // var user = await graphClient.Me.Request().GetAsync();
                 // GET /me
                 var user = await graphClient.Me.Request()
                     .Select(u => new
                     {
                         u.DisplayName,
-                        u.MailboxSettings
+                        //u.MailboxSettings
                     })
                     .GetAsync();
-
                 return user;
             }
             catch (ServiceException ex)
@@ -162,7 +159,7 @@ namespace TestGraph
                 Console.WriteLine($"Error creating event: {ex.Message}");
             }
         }
-    
-    
+
+
     }
 }

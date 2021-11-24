@@ -1,7 +1,5 @@
-﻿using Microsoft.Graph;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace TestGraph
 {
@@ -52,8 +50,7 @@ namespace TestGraph
             //    }
             //} 
             #endregion
-            var authProvider = new DeviceCodeAuthProvider("67bbfb44-4df2-4110-bcee-c708d52b7027",//"b238cedc-a5b3-4de2-a9f0-3d8eff197865",
-                new[] { "User.Read", "MailboxSettings.Read", "Calendars.ReadWrite" });
+            var authProvider = new DeviceCodeAuthProvider();
 
             // Request a token to sign in the user
             var accessToken = authProvider.GetATokenForGraph().Result;
@@ -65,9 +62,9 @@ namespace TestGraph
             Console.WriteLine($"Welcome {user.DisplayName}!\n");
 
 
-            ListCalendarEvents(user.MailboxSettings.TimeZone, $"{user.MailboxSettings.DateFormat} {user.MailboxSettings.TimeFormat}");
+            //ListCalendarEvents(user.MailboxSettings.TimeZone, $"{user.MailboxSettings.DateFormat} {user.MailboxSettings.TimeFormat}");
 
-            CreateEvent(user.MailboxSettings.TimeZone);
+            //CreateEvent("");
 
             Console.ReadKey();
         }
@@ -132,11 +129,13 @@ namespace TestGraph
             // Prompt user for info
             // Require a subject
             var subject = GetUserInput("subject", true,
-                (input) => {
+                (input) =>
+                {
                     return GetUserYesNo($"Subject: {input} - is that right?");
                 });
 
             // Attendees are optional
+
             var attendeeList = new List<string>();
             if (GetUserYesNo("Do you want to invite attendees?"))
             {
@@ -145,7 +144,8 @@ namespace TestGraph
                 do
                 {
                     attendee = GetUserInput("attendee", false,
-                        (input) => {
+                        (input) =>
+                        {
                             return GetUserYesNo($"{input} - add attendee?");
                         });
 
@@ -158,19 +158,21 @@ namespace TestGraph
             }
 
             var startString = GetUserInput("event start", true,
-                (input) => {
-            // Validate that input is a date
-            return (DateTime.TryParse(input, out var result));
+                (input) =>
+                {
+                    // Validate that input is a date
+                    return (DateTime.TryParse(input, out var result));
                 });
 
             var start = DateTime.Parse(startString);
 
             var endString = GetUserInput("event end", true,
-                (input) => {
-            // Validate that input is a date
-            // and is later than start
-            return (DateTime.TryParse(input, out var result) &&
-                        result.CompareTo(start) > 0);
+                (input) =>
+                {
+                    // Validate that input is a date
+                    // and is later than start
+                    return (DateTime.TryParse(input, out var result) &&
+                                result.CompareTo(start) > 0);
                 });
 
             var end = DateTime.Parse(endString);
@@ -199,30 +201,5 @@ namespace TestGraph
             }
         }
 
-
-
-        private async static Task connectGraphAPI()
-        {
-            try
-            {
-                Microsoft.Graph.GraphServiceClient graphClient = new GraphServiceClient(new System.Net.Http.HttpClient());
-                var onlineMeeting = new OnlineMeeting
-                {
-                    StartDateTime = DateTimeOffset.Parse("2019-07-12T21:30:34.2444915+00:00"),
-                    EndDateTime = DateTimeOffset.Parse("2019-07-12T22:00:34.2464912+00:00"),
-                    Subject = "User Token Meeting",
-
-                };
-                var res = await graphClient.Me.OnlineMeetings
-                    .Request()
-                    .AddAsync(onlineMeeting);
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
-}
+    }
 }
